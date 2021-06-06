@@ -1,4 +1,5 @@
 const {initializeConnection} = require('./Datbase/db.connnect')
+const {addVideosToDb} = require('./models/video.model')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -9,6 +10,7 @@ app.use(cors())
 const PORT = process.env.PORT || 8000
 
 initializeConnection()
+//addVideosToDb() to be added only once
 
 app.get('/' , (req , res) => {
     res.send('hello this is an  API for SPORTPLAY')
