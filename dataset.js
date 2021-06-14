@@ -139,4 +139,13 @@ const videos = [
   },
 ];
 
-module.exports = { videos };
+const user = [
+  {
+    firstName: "Admin",
+    lastName: "Admin",
+    email: "admin@gmail.com",
+    password: "Admin1!1",
+  },
+];
+
+module.exports = { videos, user };

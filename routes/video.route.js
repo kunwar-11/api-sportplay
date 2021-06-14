@@ -5,7 +5,6 @@ const router = express.Router();
 router.route("/").get(async (req, res) => {
   try {
     const videos = await Video.find({});
-    videos.__v = undefined;
     res.status(200).json({ success: true, videos });
   } catch (error) {
     res.status(400).json({
@@ -26,6 +25,7 @@ router.param("videoId", async (req, res, next, videoId) => {
 
 router.route("/:videoId").get((req, res) => {
   const { video } = req;
+  video.__v = undefined;
   res.status(200).json({ success: true, video });
 });
 
