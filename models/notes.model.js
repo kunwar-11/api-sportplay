@@ -8,7 +8,7 @@ const NotesSchema = new Schema({
   },
   notes: [
     {
-      videoId: { type: mongoose.Schema.Types.ObjectId, ref: "Video" },
+      videoId: { type: String, ref: "Video" },
       text: {
         type: String,
         required: [true, "Note Cannot be empty"],

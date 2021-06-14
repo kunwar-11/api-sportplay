@@ -8,7 +8,7 @@ const LikedVideoSchema = new Schema({
   },
   playlist: [
     {
-      _id: { type: mongoose.Schema.Types.ObjectId, ref: "Video" },
+      _id: { type: String, ref: "Video" },
     },
   ],
 });
