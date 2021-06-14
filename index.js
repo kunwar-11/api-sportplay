@@ -1,5 +1,6 @@
 const { initializeConnection } = require("./Datbase/db.connnect");
 const { addVideosToDb } = require("./models/video.model");
+const videos = require("./routes/video.route");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -10,8 +11,8 @@ app.use(cors());
 const PORT = process.env.PORT || 8000;
 
 initializeConnection();
-addVideosToDb();
-
+//addVideosToDb();
+app.use("/videos", videos);
 app.get("/", (req, res) => {
   res.send("hello this is an  API for SPORTPLAY");
 });
@@ -22,13 +23,11 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res
-    .status(500)
-    .json({
-      success: false,
-      message: "something went wrong",
-      error: err.message,
-    });
+  res.status(500).json({
+    success: false,
+    message: "something went wrong",
+    error: err.message,
+  });
 });
 
 app.listen(PORT, () => console.log(`Server started at port : ${PORT}`));
