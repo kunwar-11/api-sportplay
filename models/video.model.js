@@ -26,7 +26,7 @@ const VideoSchema = new Schema({
   views: {
     type: Number,
   },
-  timeStamp: {
+  date: {
     type: String,
   },
 });

@@ -14,7 +14,7 @@ const PlayListSchema = new Schema({
       },
       videos: [
         {
-          videoId: { type: String, ref: "Video" },
+          _id: { type: String, ref: "Video" },
         },
       ],
     },

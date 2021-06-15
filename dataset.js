@@ -9,7 +9,7 @@ const videos = [
       "India claim stunning series win, end Australia's Gabba streak | Vodafone Test Series 2020-21",
     channel: "cricket.com.au",
     views: 0,
-    timestamp: "3 months ago",
+    date: "3 months ago",
   },
   {
     _id: "No8-mBek3rs",
@@ -19,7 +19,7 @@ const videos = [
     title: "All Sports Golf Battle 3 | Dude Perfect",
     channel: "Dude Perfect",
     views: 0,
-    timestamp: "3 years ago",
+    date: "3 years ago",
   },
   {
     _id: "AfIgzMT81w0",
@@ -29,7 +29,7 @@ const videos = [
     title: "Unforgettable Legendary Goals in Football History #2",
     channel: "BTGL TV",
     views: 0,
-    timestamp: "2 years ago",
+    date: "2 years ago",
   },
   {
     _id: "zkRDrAfdKig",
@@ -40,7 +40,7 @@ const videos = [
       "Chelsea wins the Champions League! Craig Burley LAUDS Thomas Tuchel’s turnaround | ESPN FC",
     channel: "ESPN FC",
     views: 0,
-    timestamp: "1 day ago",
+    date: "1 day ago",
   },
   {
     _id: "yxvaURdWJS8",
@@ -50,7 +50,7 @@ const videos = [
     title: "Impossible Goalkeeper Saves in Football",
     channel: "TKHD",
     views: 0,
-    timestamp: "1 month ago",
+    date: "1 month ago",
   },
   {
     _id: "b_JolrQC5mE",
@@ -61,7 +61,7 @@ const videos = [
       "Australia Bowled Out For 60 | 4th Ashes Test Trent Bridge 2015 - Full Highlights",
     channel: "England & Wales Cricket Board",
     views: 0,
-    timestamp: "4 years ago",
+    date: "4 years ago",
   },
   {
     _id: "em0cfhGE5HM",
@@ -71,7 +71,7 @@ const videos = [
     title: "Rugby World Cup 2019 Semi-Final: England v New Zealand",
     channel: "World Rugby",
     views: 0,
-    timestamp: "1 year ago",
+    date: "1 year ago",
   },
   {
     _id: "EyHY5YkYAJg",
@@ -81,7 +81,7 @@ const videos = [
     title: "Final Over Drama At The Oval | England v India 2007 - Highlights",
     channel: "England & Wales Cricket Board",
     views: 0,
-    timestamp: "3 years ago",
+    date: "3 years ago",
   },
   {
     _id: "h6qoje68inc",
@@ -92,7 +92,7 @@ const videos = [
       "Stokes Heroics And Kohli Century! | England v India HIGHLIGHTS - Edgbaston 2018 | Full Test Recap",
     channel: "England & Wales Cricket Board",
     views: 0,
-    timestamp: "1 year ago",
+    date: "1 year ago",
   },
   {
     _id: "O89TmUOZTkc",
@@ -102,7 +102,7 @@ const videos = [
     title: "Chelsea beat Manchester City to win the Champions League",
     channel: "Sky Sports News",
     views: 0,
-    timestamp: "1 day ago",
+    date: "1 day ago",
   },
   {
     _id: "5pJJ-TAv14o",
@@ -113,7 +113,7 @@ const videos = [
       "Football's Civil War - A Sky Sports News special on the European Super League",
     channel: "Sky Sports News",
     views: 0,
-    timestamp: "1 month ago",
+    date: "1 month ago",
   },
   {
     _id: "AjUtWi9idFs",
@@ -124,7 +124,7 @@ const videos = [
       "Mini-Documentary :The Rise & Fall Of The European Super League | The E.S.L. Explained |",
     channel: "Football Made Simple",
     views: 0,
-    timestamp: "1 month ago",
+    date: "1 month ago",
   },
   {
     _id: "t4mQUbwx9Q0",
@@ -135,7 +135,7 @@ const videos = [
       "Tactical Analysis : Chelsea 1 - 0 Manchester City | How Tuchel Secured The Champions League |",
     channel: "Football Made Simple",
     views: 0,
-    timestamp: "1 day ago",
+    date: "1 day ago",
   },
 ];
 
