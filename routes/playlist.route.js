@@ -80,6 +80,20 @@ router
   });
 router
   .route("/:userId/:playlistId")
+  .get(async (req, res) => {
+    let { playlists } = req;
+    const { playlistId } = req.params;
+    playlists = await playlists.populate("playlist.videos._id").execPopulate();
+    const NormalizedPlaylist = playlists.playlist.map((each) => {
+      return {
+        _id: each._id,
+        name: each.name,
+        videos: each.videos.map((item) => item._id._doc),
+      };
+    });
+    let playlist = NormalizedPlaylist.find((each) => each._id == playlistId);
+    res.status(200).json({ success: true, playlist });
+  })
   .post(async (req, res) => {
     let { playlists } = req;
     const { videoId } = req.body;
