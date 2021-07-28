@@ -8,6 +8,7 @@ const historyVideos = require("./routes/history.route");
 const watchlater = require("./routes/watchlater.route");
 const notes = require("./routes/notes.route");
 const playlist = require("./routes/playlist.route");
+const authentication = require("./routes/auth.route");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -27,6 +28,7 @@ app.use("/history", historyVideos);
 app.use("/watchlater", watchlater);
 app.use("/notes", notes);
 app.use("/playlists", playlist);
+app.use("/auth", authentication);
 app.get("/", (req, res) => {
   res.send("hello this is an  API for SPORTPLAY");
 });
