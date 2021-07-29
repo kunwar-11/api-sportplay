@@ -1,5 +1,6 @@
 const { LikedVideo } = require("../models/likedVideo.model");
 const express = require("express");
+const { verifyToken } = require("../middleware/verifytoken");
 const router = express.Router();
 
 router.route("/").get(async (req, res) => {
@@ -14,17 +15,19 @@ router.route("/").get(async (req, res) => {
   }
 });
 
+router.use(verifyToken);
+
 router.param("userId", async (req, res, next, userId) => {
   try {
     const likedVideos = await LikedVideo.findOne({ uid: userId });
-    if (!likedVideos) {
-      return res.status(400).json({
-        success: false,
-        message: "LikedVideos Not Found Please Sign Up!!",
-      });
+    if (likedVideos) {
+      req.likedVideos = likedVideos;
+      return next();
     }
-    req.likedVideos = likedVideos;
-    next();
+    return res.status(400).json({
+      success: false,
+      message: "LikedVideos Not Found Please Sign Up!!",
+    });
   } catch (error) {
     res.status(404).json({ success: false, message: error.message });
   }

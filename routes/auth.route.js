@@ -3,6 +3,12 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../models/user.model");
+const { LikedVideo } = require("../models/likedVideo.model");
+const { History } = require("../models/history.model");
+const { Note } = require("../models/notes.model");
+const { PlayList } = require("../models/playlist.model");
+const { UnlikedVideos } = require("../models/unlikedvideo.model");
+const { WatchLater } = require("../models/watchlater.model");
 
 router.route("/signup").post(async (req, res) => {
   const user = req.body;
@@ -18,6 +24,21 @@ router.route("/signup").post(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     NewUser.password = await bcrypt.hash(NewUser.password, salt);
     await NewUser.save();
+    const NewLikedVideo = new LikedVideo({ uid: NewUser._id, playlist: [] });
+    await NewLikedVideo.save();
+    const NewHistory = new History({ uid: NewUser._id, playlist: [] });
+    await NewHistory.save();
+    const NewUnlikedVideos = new UnlikedVideos({
+      uid: NewUser._id,
+      playlist: [],
+    });
+    await NewUnlikedVideos.save();
+    const NewWatchLater = new WatchLater({ uid: NewUser._id, playlist: [] });
+    await NewWatchLater.save();
+    const NewPlayList = new PlayList({ uid: NewUser._id, playlist: [] });
+    await NewPlayList.save();
+    const NewNote = new Note({ uid: NewUser._id, notes: [] });
+    await NewNote.save();
     res.status(201).json({ success: true, user: NewUser });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
