@@ -1,6 +1,7 @@
 const { PlayList } = require("../models/playlist.model");
 const express = require("express");
 const { each } = require("lodash");
+const { verifyToken } = require("../middleware/verifytoken");
 const router = express.Router();
 
 router.route("/").get(async (req, res) => {
@@ -15,47 +16,41 @@ router.route("/").get(async (req, res) => {
   }
 });
 
-router.param("userId", async (req, res, next, userId) => {
-  try {
-    const playlists = await PlayList.findOne({ uid: userId });
-    if (!playlists) {
-      return res.status(400).json({
-        success: false,
-        message: "playlist Not Found Please Sign Up!!",
-      });
-    }
-    req.playlists = playlists;
-    next();
-  } catch (error) {
-    res.status(404).json({ success: false, message: error.message });
-  }
-});
+router.use(verifyToken);
 
 router
   .route("/:userId")
   .get(async (req, res) => {
-    let { playlists } = req;
+    let { userId } = req;
     try {
-      playlists = await playlists
-        .populate("playlist.videos._id")
-        .execPopulate();
-      const NormalizedPlaylist = playlists.playlist.map((each) => {
-        return {
-          _id: each._id,
-          name: each.name,
-          videos: each.videos.map((item) => item._id._doc),
-        };
-      });
-      res.status(200).json({
-        success: true,
-        playlists: NormalizedPlaylist,
+      let playlists = await PlayList.findOne({ uid: userId });
+      if (playlists) {
+        playlists = await playlists
+          .populate("playlist.videos._id")
+          .execPopulate();
+        const NormalizedPlaylist = playlists.playlist.map((each) => {
+          return {
+            _id: each._id,
+            name: each.name,
+            videos: each.videos.map((item) => item._id._doc),
+          };
+        });
+        return res.status(200).json({
+          success: true,
+          playlists: NormalizedPlaylist,
+        });
+      }
+      return res.status(400).json({
+        success: false,
+        message: "playlist Not Found Please Sign Up!!",
       });
     } catch (error) {
       res.status(404).json({ success: false, message: error.message });
     }
   })
   .post(async (req, res) => {
-    let { playlists } = req;
+    let { userId } = req;
+    let playlists = await PlayList.findOne({ uid: userId });
     const { name, videoId } = req.body;
     try {
       playlists.playlist.push({ name, videos: [{ _id: videoId }] });
@@ -81,7 +76,8 @@ router
 router
   .route("/:userId/:playlistId")
   .get(async (req, res) => {
-    let { playlists } = req;
+    let { userId } = req;
+    let playlists = await PlayList.findOne({ uid: userId });
     const { playlistId } = req.params;
     playlists = await playlists.populate("playlist.videos._id").execPopulate();
     const NormalizedPlaylist = playlists.playlist.map((each) => {
@@ -95,7 +91,8 @@ router
     res.status(200).json({ success: true, playlist });
   })
   .post(async (req, res) => {
-    let { playlists } = req;
+    let { userId } = req;
+    let playlists = await PlayList.findOne({ uid: userId });
     const { videoId } = req.body;
     const { playlistId } = req.params;
     try {
@@ -110,7 +107,8 @@ router
     }
   })
   .delete(async (req, res) => {
-    let { playlists } = req;
+    let { userId } = req;
+    let playlists = await PlayList.findOne({ uid: userId });
     const { playlistId } = req.params;
     try {
       playlists.playlist.pull({ _id: playlistId });
@@ -121,7 +119,8 @@ router
     }
   });
 router.route("/:userId/:playlistId/:videoId").delete(async (req, res) => {
-  let { playlists } = req;
+  let { userId } = req;
+  let playlists = await PlayList.findOne({ uid: userId });
   const { playlistId, videoId } = req.params;
   try {
     const playlist = playlists.playlist.find((each) => each._id == playlistId);

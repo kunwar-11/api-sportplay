@@ -17,40 +17,32 @@ router.route("/").get(async (req, res) => {
 
 router.use(verifyToken);
 
-router.param("userId", async (req, res, next, userId) => {
-  try {
-    const likedVideos = await LikedVideo.findOne({ uid: userId });
-    if (likedVideos) {
-      req.likedVideos = likedVideos;
-      return next();
-    }
-    return res.status(400).json({
-      success: false,
-      message: "LikedVideos Not Found Please Sign Up!!",
-    });
-  } catch (error) {
-    res.status(404).json({ success: false, message: error.message });
-  }
-});
-
 router
   .route("/:userId")
   .get(async (req, res) => {
-    let { likedVideos } = req;
+    let { userId } = req;
     try {
-      likedVideos = await likedVideos.populate("playlist._id").execPopulate();
-      const NormalizedLikedVideos = likedVideos.playlist.map(
-        (item) => item._id._doc
-      );
-      res
-        .status(200)
-        .json({ success: true, likedVideos: NormalizedLikedVideos });
+      let likedVideos = await LikedVideo.findOne({ uid: userId });
+      if (likedVideos) {
+        likedVideos = await likedVideos.populate("playlist._id").execPopulate();
+        const NormalizedLikedVideos = likedVideos.playlist.map(
+          (item) => item._id._doc
+        );
+        return res
+          .status(200)
+          .json({ success: true, likedVideos: NormalizedLikedVideos });
+      }
+      return res.status(400).json({
+        success: false,
+        message: "LikedVideos Not Found Please Sign Up!!",
+      });
     } catch (error) {
       res.status(404).json({ success: false, message: error.message });
     }
   })
   .post(async (req, res) => {
-    let { likedVideos } = req;
+    let { userId } = req;
+    let likedVideos = await LikedVideo.findOne({ uid: userId });
     const { videoId } = req.body;
     try {
       if (likedVideos.playlist.some((each) => each._id == videoId)) {
@@ -71,7 +63,8 @@ router
     }
   });
 router.route("/:userId/:videoId").delete(async (req, res) => {
-  let { likedVideos } = req;
+  let { userId } = req;
+  let likedVideos = await LikedVideo.findOne({ uid: userId });
   const { videoId } = req.params;
   try {
     const video = likedVideos.playlist.find((each) => each._id == videoId);

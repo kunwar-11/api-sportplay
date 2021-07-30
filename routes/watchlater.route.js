@@ -1,5 +1,6 @@
 const { WatchLater } = require("../models/watchlater.model");
 const express = require("express");
+const { verifyToken } = require("../middleware/verifytoken");
 const router = express.Router();
 
 router.route("/").get(async (req, res) => {
@@ -13,6 +14,8 @@ router.route("/").get(async (req, res) => {
     });
   }
 });
+
+router.use(verifyToken);
 
 router.param("userId", async (req, res, next, userId) => {
   try {
@@ -33,19 +36,29 @@ router.param("userId", async (req, res, next, userId) => {
 router
   .route("/:userId")
   .get(async (req, res) => {
-    let { watchlater } = req;
+    let { userId } = req;
     try {
-      watchlater = await watchlater.populate("playlist._id").execPopulate();
-      const NormalizedWatchlater = watchlater.playlist.map(
-        (item) => item._id._doc
-      );
-      res.status(200).json({ success: true, watchlater: NormalizedWatchlater });
+      let watchlater = await WatchLater.findOne({ uid: userId });
+      if (watchlater) {
+        watchlater = await watchlater.populate("playlist._id").execPopulate();
+        const NormalizedWatchlater = watchlater.playlist.map(
+          (item) => item._id._doc
+        );
+        return res
+          .status(200)
+          .json({ success: true, watchlater: NormalizedWatchlater });
+      }
+      return res.status(400).json({
+        success: false,
+        message: "watchlater Not Found Please Sign Up!!",
+      });
     } catch (error) {
       res.status(404).json({ success: false, message: error.message });
     }
   })
   .post(async (req, res) => {
-    let { watchlater } = req;
+    let { userId } = req;
+    let watchlater = await WatchLater.findOne({ uid: userId });
     const { videoId } = req.body;
     try {
       if (watchlater.playlist.some((each) => each._id == videoId)) {
@@ -66,7 +79,8 @@ router
     }
   });
 router.route("/:userId/:videoId").delete(async (req, res) => {
-  let { watchlater } = req;
+  let { userId } = req;
+  let watchlater = await WatchLater.findOne({ uid: userId });
   const { videoId } = req.params;
   try {
     const video = watchlater.playlist.find((each) => each._id == videoId);
