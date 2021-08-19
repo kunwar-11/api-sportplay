@@ -17,22 +17,6 @@ router.route("/").get(async (req, res) => {
 
 router.use(verifyToken);
 
-router.param("userId", async (req, res, next, userId) => {
-  try {
-    const watchlater = await WatchLater.findOne({ uid: userId });
-    if (!watchlater) {
-      return res.status(400).json({
-        success: false,
-        message: "watchlater Not Found Please Sign Up!!",
-      });
-    }
-    req.watchlater = watchlater;
-    next();
-  } catch (error) {
-    res.status(404).json({ success: false, message: error.message });
-  }
-});
-
 router
   .route("/:userId")
   .get(async (req, res) => {
