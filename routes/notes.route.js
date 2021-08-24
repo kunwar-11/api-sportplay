@@ -51,7 +51,8 @@ router
 router
   .route("/:userId/:noteId")
   .post(async (req, res) => {
-    let { notes } = req;
+    let { userId } = req;
+    let notes = await Note.findOne({ uid: userId });
     const { noteId } = req.params;
     const updateNote = req.body;
     try {
