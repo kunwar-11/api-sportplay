@@ -47,14 +47,14 @@ router
     let { userId } = req;
     const { videoId } = req.body;
     let historyVideos = await History.findOne({ uid: userId });
-    let video = await Video.findOne({ _id: videoId });
+    let currentVideo = await Video.findOne({ _id: videoId });
     try {
       if (historyVideos.playlist.some((each) => each._id == videoId)) {
         return res.json({ success: false, message: "Video is Already Liked" });
       }
-      if (video) {
-        video = extend(video, { views: video.views + 1 });
-        await video.save();
+      if (currentVideo) {
+        currentVideo = extend(currentVideo, { views: currentVideo.views + 1 });
+        await currentVideo.save();
       }
       historyVideos.playlist.push({ _id: videoId });
       historyVideos = await historyVideos.save();
