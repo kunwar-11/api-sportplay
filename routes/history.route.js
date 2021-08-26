@@ -1,5 +1,6 @@
 const { History } = require("../models/history.model");
 const { Video } = require("../models/video.model");
+const { extend } = require("lodash");
 const express = require("express");
 const { verifyToken } = require("../middleware/verifytoken");
 const router = express.Router();
