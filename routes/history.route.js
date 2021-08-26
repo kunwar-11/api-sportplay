@@ -50,12 +50,12 @@ router
     let historyVideos = await History.findOne({ uid: userId });
     let currentVideo = await Video.findOne({ _id: videoId });
     try {
-      if (historyVideos.playlist.some((each) => each._id == videoId)) {
-        return res.json({ success: false, message: "Video is Already Liked" });
-      }
       if (currentVideo) {
         currentVideo = extend(currentVideo, { views: currentVideo.views + 1 });
         await currentVideo.save();
+      }
+      if (historyVideos.playlist.some((each) => each._id == videoId)) {
+        return res.json({ success: false, message: "Video is Already Liked" });
       }
       historyVideos.playlist.push({ _id: videoId });
       historyVideos = await historyVideos.save();
