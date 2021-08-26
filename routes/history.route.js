@@ -1,4 +1,5 @@
 const { History } = require("../models/history.model");
+const { Video } = require("../models/video.model");
 const express = require("express");
 const { verifyToken } = require("../middleware/verifytoken");
 const router = express.Router();
@@ -44,11 +45,16 @@ router
   })
   .post(async (req, res) => {
     let { userId } = req;
-    let historyVideos = await History.findOne({ uid: userId });
     const { videoId } = req.body;
+    let historyVideos = await History.findOne({ uid: userId });
+    let video = await Video.findOne({ _id: videoId });
     try {
       if (historyVideos.playlist.some((each) => each._id == videoId)) {
         return res.json({ success: false, message: "Video is Already Liked" });
+      }
+      if (video) {
+        video = extend(video, { views: video.views + 1 });
+        await video.save();
       }
       historyVideos.playlist.push({ _id: videoId });
       historyVideos = await historyVideos.save();
